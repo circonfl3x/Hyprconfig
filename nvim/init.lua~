@@ -1,0 +1,19 @@
+
+require('config')
+require('options')
+local lsp = require('lspconfig')
+lsp.clangd.setup{
+	cmd = {'clangd', '--background-index', '--compile-commands-dir', 'D:/systemc/exercises/build'},
+	init_options = {
+		clangdFileStatus = true,
+		clangdSemanticHighlighting = true
+	},
+	filetypes = {'c','cpp','cxx','cc'},
+	root_dir = function() vim.fn.getcwd() end,
+	settings = {
+		['clangd'] = {
+			['compilationDatabasePath'] = 'build',
+			['fallbackFlags'] = {'-std=c++17'}
+		}
+	}
+}
