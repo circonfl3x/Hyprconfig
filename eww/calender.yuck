@@ -1,0 +1,13 @@
+(defvar cal-visible false)
+(defwindow cal[]
+  :monitor 0
+  :geometry (geometry :x "50%"
+                      :y "1%"
+                      :anchor "top center"
+                      :width "30%"
+                      :height "30%")
+  :stacking "fg"
+  :windowtype "toolbar"
+  :wm-ignore true  
+
+(calendar))

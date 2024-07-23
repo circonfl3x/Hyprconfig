@@ -1,0 +1,23 @@
+(defpoll kbbrightness :interval "5ms"
+                   :initial 0
+                  
+  'sh scripts/brightness_kb.sh')
+
+(defpoll kbmax :interval "10000s"
+               :initial 0
+'sh scripts/brightness_kb_max.sh'
+)
+
+
+(defwidget kbbrightness[]
+
+  
+  (scale :class "kbbrightness"
+         :value "${kbbrightness/kbmax*100}"
+         :round-digits 0
+         :halign "fill"
+         :hexpand true
+         :orientation "h"
+         :onchange "brightnessctl --device=\"kbd_backlight\" set {}%"
+  )
+)

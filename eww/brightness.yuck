@@ -1,0 +1,14 @@
+
+(defpoll max_b :interval "10ms"
+               :initial 0
+"sh ./scripts/brightness_max.sh")
+(defpoll brightness :interval "10ms"
+                    :initial 0
+"sh ./scripts/brightness.sh")
+
+(defwidget brightness[]
+  (label :text ""
+         ;:class {brightness/max_b*100 < 20 ? "low_b" :  brightness/max_b*100 < 50 ? "mid_b" :  brightness/max_b*100 < 80 ? "high_b" : "full_b"})
+          ;:text "🔆" 
+          :class "brightness"        
+))

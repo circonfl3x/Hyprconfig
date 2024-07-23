@@ -1,0 +1,28 @@
+
+(include "revealer.yuck")
+(defpoll vol :interval "5ms"
+             :initial 0
+"sh ./scripts/vol.sh")
+(defvar vol-slider-visible false)
+
+
+
+(defwidget volume []
+(eventbox :onhover "${eww} update vol-slider-visible=true"
+          :onhoverlost "${eww} update vol-slider-visible=false"
+(revealer :transition "slideleft"
+          :reveal {vol-slider-visible}
+          :duration "1ms"
+(scale :class "volume"
+       :value {vol*100}
+       :width {vol-slider-visible == true ? 50 : 1}
+       :onchange "wpctl set-volume @DEFAULT_SINK@ {}%"
+       :round-digits 0
+        )
+)))
+
+
+(defwidget volume_label[]
+          (label :text "${vol == 0 ? "" : vol < 0.2 ? "" : vol < 0.4 ? "" : "" }"
+                 :class {vol == 0.0 ? "volume-label-muted" : "volume-label" })
+)

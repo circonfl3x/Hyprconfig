@@ -1,0 +1,13 @@
+(defpoll degrees :initial ""
+                 :interval 900
+"python3 scripts/weather.py"
+
+)
+
+
+(defwidget weather[]
+
+(label :class "weather"
+       :text "${degrees}"
+       :halign "center")
+)

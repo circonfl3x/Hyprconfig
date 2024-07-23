@@ -1,0 +1,79 @@
+(include "workspaces.yuck")
+(include "systray.yuck")
+(include "volumes.yuck")
+(include "brightness.yuck")
+(include "net.yuck")
+(include "battery.yuck")
+(include "controlcenter.yuck")
+(include "calender.yuck")
+(include "weather.yuck")
+; (include "powermenu.yuck")
+(defvar time-visible false)
+(defvar time-expanded false)
+(defvar volume-visible false)
+(defvar eww "eww -c ~/.config/eww")
+
+
+(defpoll seconds :interval "1s"
+              :initial ""
+'date +%S')
+
+(defpoll time :interval "1s"
+              :initial ""
+'date +%H:%M'
+
+)
+; (defpoll controlcenter_open :interval "1ms"
+                       ; :initial 0
+; 'sh ./scripts/cc.sh')
+
+(defwidget system[]
+(box  
+    :halign "end"
+    :class "system"
+    (eventbox :onclick "${eww} update cc_open=${cc_open==true?false:true} ; eww ${cc_open == true ? "close" : "open"} control_center"
+              :cursor "pointer"
+              ;:onclick "eww ${controlcenter_open == 1 ? "close" : "open"} control_center"
+    (box :class "sys_area"
+         :spacing 30
+         :space-evenly false
+         :hexpand false
+              (network)
+              (volume_label)
+              (brightness)
+              (battery)
+              (time)
+              (new-tray)
+              (label :text "")
+    
+))))
+
+
+(defwidget time []
+  (label :text time :class "time")
+        
+)
+
+(defwidget bar[]
+(box :orientation "h"
+     :hexpand false
+              (workspace)
+              
+              (weather)
+              ; (time)              
+              (system :halign "end")
+))
+
+(defwindow main
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "20px"
+                               :width "90%"
+                               :height "50px"
+                               :anchor "top center")
+           :stacking "fg"
+           :exclusive true
+           :windowtype "dock"
+           :wm-ignore false
+(bar))
+

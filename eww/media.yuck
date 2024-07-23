@@ -1,0 +1,51 @@
+(defpoll status :interval ""
+                :interval "100ms"
+'sh ./scripts/status.sh')
+(defpoll album :initial ""
+               :interval "100ms"
+'sh ./scripts/song-album.sh'
+)
+
+(defpoll title :initial "No song playing"
+               :interval "100ms"
+'sh ./scripts/song-title.sh')
+
+(defpoll artist :initial ""
+                :interval "100ms"
+                
+'sh ./scripts/song-artist.sh')
+
+(defpoll artUtl :initial ""
+                :interval "100ms"
+'sh ./scripts/song-art.sh')
+
+
+(defwidget media[]
+(overlay
+(centerbox 
+  :space-evenly true
+  :class "box-media"
+  :width 100
+  :valign "center"
+  ;:css ".box-media{background: url(\"${artUrl}\")}"
+  
+  (eventbox :onclick "playerctl previous" 
+            :halign "start"
+    (label :text "  " :class "media-back"))
+  (box :orientation "h"
+  (box :class "media"
+      :orientation "v"
+       :space-evenly true
+       :halign "center"
+      (label :text "${status == "p" ? title : "Nothing playing..."}" :class "media-title")
+     ;(label :text "${album == "" ? "" : "${album} - "} ${artist}" :class "media-album")
+      (label :text "${artist}" :class "media-album"))
+
+    
+    )
+    
+(eventbox :onclick "playerctl next" 
+          :halign "end"
+  (label :text "  " :class "media-front"))
+
+)))

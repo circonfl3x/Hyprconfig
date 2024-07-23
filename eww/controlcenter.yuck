@@ -1,0 +1,98 @@
+(include "kbbacklight.yuck")
+(include "media.yuck")
+(include "powermenu.yuck")
+(defvar cc_open false)
+(defwidget volume-slider[]
+
+  (scale :value {vol*100} ;promise value
+       :onchange "wpctl set-volume @DEFAULT_SINK@ {}%" 
+       :orientation "h"
+       :class "vol-slider"
+       :halign "fill"
+       :hexpand true
+       :round-digits 0
+  ))
+
+(defwidget brightness-slider[]
+  (scale 
+         :value {brightness/max_b*100}
+         :onchange "brightnessctl set {}%"
+         :halign "fill"
+         :hexpand true
+         :round-digits 0
+         )
+)
+
+
+(defwidget topbar[]
+  (centerbox :class "cc_topbar"
+            :valign "center"
+    (label :text "   ${round(vol*100,0)}%" :class "vol-top-label" :halign "start")
+    (label :text "🔆 ${round(brightness/max_b*100,0)}%" :class "bright-top-label" :halign "center")
+    (battery_label_top :percentage battery_status)
+  
+  )
+)
+
+(defwidget username[]
+  (label :text "sayalel")
+)
+(defwidget sliders[]
+(eventbox :onhoverlost "eww -c ~/.config/eww update cc_open=false ; eww close control_center"
+
+(box :orientation "v"
+     :space-evenly false
+  (topbar)
+  (box :spacing 5
+        :space-evenly false
+        :orientation "h"
+        :class "slider-cc"
+        (label :text "" :class "slider-vol-label")
+        (volume-slider))
+  (box :spacing 5
+       :space-evenly false
+       :orientation "h"
+       :class "slider-cc"
+       (label :text "🔆" :class "slider-brightness-label")
+      
+  (brightness-slider))
+
+  (box :spacing 5
+       :space-evenly false
+       :orientation "h"
+       :class "slider-cc"
+      (label :text "󰌌" :class "slider-kbbrightness-label")
+       (kbbrightness)
+  )
+  (box :spacing 5
+       :space-evenly true
+       :orientation "h"
+       :class "slider-cc"
+     (media) 
+  )
+  (box :spacing 5
+            :halign "center"
+            :class "box-powerbutton"
+            :onclick "${eww} update powermenu_open=${powermenu_open == false ? true : false} ; eww ${powermenu_open == true ? "open" : "close"} powermenu"
+            
+    (label :text " 󰐥 " :class "powerbutton")          
+    
+  )
+  ))
+)
+(defwindow control_center[]
+  :monitor 0
+  :geometry (geometry :x "2.2%"
+                      :y "1%"
+                      :anchor "top right"
+                      :width "30%"
+                      :height "20%"
+                      )
+  :stacking "fg"
+  :windowtype "toolbar"
+  :wm-ignore true
+  
+(box :orientation "v"
+(sliders)
+  ;(calendar))
+))

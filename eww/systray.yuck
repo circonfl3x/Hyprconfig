@@ -1,0 +1,51 @@
+
+(defvar tray-visible false)
+(defvar tray-child 0)
+
+(defwidget arrow[]
+(eventbox ;:onclick "${eww} update tray-visible=${tray-visible == true ? false : true}"
+          
+:onhover "${eww} update tray-visible=true"
+         :onhoverlost "${eww} update tray-visible=false" 
+          :halign "end"
+(label :text "${tray-visible == true ? ">" : "<"}"))
+)
+(defwidget tray[]
+(eventbox :onclick "${eww} update tray-visible=${tray-visible == true ? false : true}"
+;(eventbox :onhover "${eww} update tray-visible=true"
+ ;         :onhoverlost "${eww} update tray-visible=false" 
+   (box
+    (label :text "${tray-visible == true ? ">" : "<"}"
+            :halign "end"
+            :justify "right")
+    (revealer :class "revealer-systray"
+              :transition "slideleft"
+              :reveal "${tray-visible}"
+              :duration "1ms"
+
+    (systray :orientation "h"
+           :spacing 1
+           :icon-size 22
+           :halign "end")
+
+))))
+
+(defwidget new-tray[]
+
+(eventbox ;:onclick "${eww} update tray-visible=${tray-visible == true ? false : true}"
+          :class "systray"
+          :onhover "${eww} update tray-visible=true"
+          :onhoverlost "${eww} update tray-visible=false" 
+          (stack
+                    :selected {tray-visible == true ? 1 : 0}
+                    :transition "slideleft"
+                    :same-size false
+                    (label :text "<"
+                           :limit-width 1)
+                    (systray :orientation "h"
+                              :icon-size 22
+                              :halign "end"
+                              :space-evenly true)
+          )
+)
+)

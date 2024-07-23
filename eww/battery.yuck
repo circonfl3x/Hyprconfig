@@ -1,0 +1,28 @@
+
+(defpoll battery_status :initial 0
+                        :interval "1s"
+"sh ./scripts/battery.sh")
+(defpoll charging :initial 0
+                  :interval "500ms"
+"sh ./scripts/charging.sh")
+(defwidget battery_label [?percentage]
+
+  (label :text "${battery_status > 75 ? "" : battery_status > 60 ? "" : battery_status > 40 ? "" : battery_status > 20 ? "" : ""} ${percentage != "" ? "${percentage}%" : ""}" 
+         :class {charging > 0 ? "bat-charging" : battery_status > 60 ? "bat" : battery_status > 40 ? "bat-mid" : battery_status > 20 ? "bat-midlow" : "bat-low"}
+         ))
+
+(defwidget battery_label_top [?percentage]
+
+  (label :text "${battery_status > 75 ? "" : battery_status > 60 ? "" : battery_status > 40 ? "" : battery_status > 20 ? "" : ""}   ${percentage != "" ? "${percentage}%" : ""}" 
+         :class {charging > 0 ? "bat-charging-top" : battery_status > 60 ? "bat-top" : battery_status > 40 ? "bat-mid-top" : battery_status > 20 ? "bat-midlow-top" : "bat-low-top"}
+         :halign "end"))
+(defwidget battery[]
+(box :spacing 1
+  ;(label :text "")
+  (label ;:text "${charging > 0 ? "" : ""}" :class "thunder"
+          :text ""
+          :class "thunder"
+          :visible {charging == 0 ? false : true})
+  
+  (battery_label :percentage "")
+))

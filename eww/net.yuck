@@ -1,0 +1,11 @@
+(defpoll net :initial 0
+             :interval "10ms"
+"sh ./scripts/nm.sh")
+
+(defwidget network[]
+
+
+  (label :text " "
+  
+         :class {net == 1 ? "net-off" : "net"})
+)
