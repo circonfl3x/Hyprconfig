@@ -62,9 +62,9 @@ int main(void){
         }
     }
     if(!b->connected){
-        printf("󰂲\n");
+        printf("󰂲 Disconnected\n");
     }
-    else printf("%s\n", b->name->data);
+    else printf("󰂯 %s\n", b->name->data);
     
     bfree(b);
     free(b);
