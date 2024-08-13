@@ -1,1 +1,1 @@
-echo $(brightnessctl --device="kbd_backlight" max)
+echo $(brightnessctl --device="tpacpi::kbd_backlight" max)

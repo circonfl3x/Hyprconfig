@@ -1,14 +1,14 @@
 *{
   /* font-family: CaskaydiaCoveNerdFont; */
-  font-family: UbuntuNerdFont;
+  font-family: IosevkaNerdFont-mono;
 }
 
 .main{
   /* background: linear-gradient(45deg, rgba(35,38,52, 0.7), rgba(98, 104, 128, 0.7)); */
   background: rgba(46,52,64,0.5);
   color: #f2d5cf;
-  font-size: 22px;
-  font-family: CaskaydiaCoveNerdFont;
+  font-size: 21px;
+  font-family: IosevkaNerdFont;
   min-width: 70em;
   border-radius: 20px;
   
@@ -80,7 +80,8 @@
   /* background: rgba(48, 52, 70, 0.6); catpuccin frappe*/ 
   
   /* background-color: #4C566A; nordic polar night */
-  background-color: rgba(81, 87, 109,0.7);
+  background-color: rgba(81, 87, 109,0.4);
+  /* background-color: rgba(0,0,0,0.2); */
   border-radius: 15px;
 }
 
@@ -89,26 +90,33 @@
   color: #ef9f76; /*catpuccin frappe*/
 }
 
-.slider-vol-label,
 .slider-brightness-label{
+  color: #df8e1d;
+  font-size: 32px;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.slider-vol-label,
+{
   font-size: 24px;
-  padding-left: 3px;
+  padding-left: 10px;
 }
 
 .slider-kbbrightness-label{
   font-size: 28px;
-  padding-left: 3px;
+  padding-left: 10px;
   color: #f2d5cf;
 }
 
 .slider-cc{
-  border-radius: 10px;
+  border-radius: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;
   margin-right: 5px;
   padding: 3px;
-  background-color: rgb(98, 104, 128);
+  background-color: rgba(98, 104, 128, 0.4);
 }
 
 .cc_topbar{
@@ -121,6 +129,7 @@
 }
 
 scale slider {
+  border-radius: 60px;
   min-height: 50px;
   border: 0px;
   border-color: black;
@@ -129,10 +138,12 @@ scale slider {
   background: rgba(0,0,0,0);
 }
 scale trough{
+  border-radius: 60px;
   background-color: #c6d0f5;
   padding: 0px;
 }
 scale fill, scale highlight{
+  border-radius: 60px;
   background-color: #8caaee;
 }
 calendar{
@@ -162,7 +173,7 @@ calendar{
   padding: 10px;
   margin: 20px;
   
-  background-color: rgb(98, 104, 128);
+  background-color: rgba(98, 104, 128, 0.4);
   border-radius: 40px;
 }
 .media-back, .media-front{
@@ -208,8 +219,39 @@ calendar{
 }
 
 .powerbutton{
-  font-size: 36px;
+  font-size: 32px;
   padding-left: 10px;
   /* background-color: rgb(98, 104, 128); */
   color: #f2d5cf;
+  /* background-color: red; */
+}
+.username, .hostname, .network_label,.bluetooth
+{
+  background-color: rgba(98,104,128,0.4); 
+  /* font-size: 22px; */
+  margin: 10px 5px 10px 5px;
+  border-radius: 40px;
+}
+.username{
+  color: #c6d0f5;
+  /* background-color: rgb(98, 104, 128); */
+}
+
+.hostname, .bluetooth{
+  /* color: #c6d0f5; */
+  color: #8caaee;
+  /* background-color: rgb(98, 104, 128); */
+  border-radius: 40px;
+  font-size: 18px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.network_label{
+  /* color: #c6d0f5; */
+  color: #8caaee;
+  font-size: 18px;
+  padding-left: 20px;
+  padding-right: 20px;
+  
 }

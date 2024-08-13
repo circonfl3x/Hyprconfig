@@ -1,0 +1,51 @@
+==1199238== Memcheck, a memory error detector
+==1199238== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==1199238== Using Valgrind-3.23.0-c54d316124-20240426 and LibVEX; rerun with -h for copyright info
+==1199238== Command: ./blue
+==1199238== Parent PID: 34750
+==1199238== 
+--1199238-- 
+--1199238-- Valgrind options:
+--1199238--    --leak-check=full
+--1199238--    --show-leak-kinds=all
+--1199238--    --track-origins=yes
+--1199238--    --verbose
+--1199238--    --log-file=vout.txt
+--1199238-- Contents of /proc/version:
+--1199238--   Linux version 6.10.3-arch1-1 (linux@archlinux) (gcc (GCC) 14.2.1 20240802, GNU ld (GNU Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Sun, 04 Aug 2024 05:11:32 +0000
+--1199238-- 
+--1199238-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--1199238-- Page sizes: currently 4096, max supported 4096
+--1199238-- Valgrind library directory: /usr/lib/valgrind
+--1199238-- Reading syms from /home/sayalel/Projects/eww/blue
+--1199238-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==1199238== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+==1199238== Server query failed: No such file or directory
+
+valgrind:  Fatal error at startup: a function redirection
+valgrind:  which is mandatory for this platform-tool combination
+valgrind:  cannot be set up.  Details of the redirection are:
+valgrind:  
+valgrind:  A must-be-redirected function
+valgrind:  whose name matches the pattern:      strcmp
+valgrind:  in an object with soname matching:   ld-linux-x86-64.so.2
+valgrind:  was not found whilst processing
+valgrind:  symbols from the object with soname: ld-linux-x86-64.so.2
+valgrind:  
+valgrind:  Possible fixes: (1, short term): install glibc's debuginfo
+valgrind:  package on this machine.  (2, longer term): ask the packagers
+valgrind:  for your Linux distribution to please in future ship a non-
+valgrind:  stripped ld.so (or whatever the dynamic linker .so is called)
+valgrind:  that exports the above-named function using the standard
+valgrind:  calling conventions for this platform.  The package you need
+valgrind:  to install for fix (1) is called
+valgrind:  
+valgrind:    On Debian, Ubuntu:                 libc6-dbg
+valgrind:    On SuSE, openSuSE, Fedora, RHEL:   glibc-debuginfo
+valgrind:  
+valgrind:  Note that if you are debugging a 32 bit process on a
+valgrind:  64 bit system, you will need a corresponding 32 bit debuginfo
+valgrind:  package (e.g. libc6-dbg:i386).
+valgrind:  
+valgrind:  Cannot continue -- exiting now.  Sorry.
+

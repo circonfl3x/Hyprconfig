@@ -1,0 +1,7 @@
+(defpoll ssid :initial "Not connected"
+              :interval "1s"
+'sh ./scripts/network.sh'
+)
+
+(defwidget network_label[]
+(label :text "󰖩  ${ssid}" :class "network_label") )

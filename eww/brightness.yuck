@@ -1,11 +1,15 @@
 
-(defpoll max_b :interval "10ms"
-               :initial 0
-"sh ./scripts/brightness_max.sh")
+; (defpoll max_b :interval "10ms"
+               ; :initial 0
+; "sh ./scripts/brightness_max.sh")
+; (defpoll brightness :interval "10ms"
+                    ; :initial 0
+; "sh ./scripts/brightness.sh")
+
+; C call is around 10x faster than calls to sh (optymyzeshon)
 (defpoll brightness :interval "10ms"
                     :initial 0
-"sh ./scripts/brightness.sh")
-
+'./scripts/build/brightness')
 (defwidget brightness[]
   (label :text ""
          ;:class {brightness/max_b*100 < 20 ? "low_b" :  brightness/max_b*100 < 50 ? "mid_b" :  brightness/max_b*100 < 80 ? "high_b" : "full_b"})

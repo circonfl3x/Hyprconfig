@@ -1,0 +1,12 @@
+(defpoll bluetooth :initial ""
+                   :interval "1s"
+"./scripts/build/blue")
+
+
+(defwidget blue_name[]
+
+  (label 
+  :text "${strlength(bluetooth) > 10 ? "${substring(bluetooth,0,10)}..." : bluetooth}"
+  :class "bluetooth")
+)
+  

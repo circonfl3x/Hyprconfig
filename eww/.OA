@@ -1,0 +1,273 @@
+[4mstat[24m(2)                          System Calls Manual                         [4mstat[24m(2)
+
+[1mNAME[0m
+       stat, fstat, lstat, fstatat - get file status
+
+[1mLIBRARY[0m
+       Standard C library ([4mlibc[24m, [4m-lc[24m)
+
+[1mSYNOPSIS[0m
+       [1m#include <sys/stat.h>[0m
+
+       [1mint stat(const char *restrict [4m[22mpathname[24m[1m,[0m
+                [1mstruct stat *restrict [4m[22mstatbuf[24m[1m);[0m
+       [1mint fstat(int [4m[22mfd[24m[1m, struct stat *[4m[22mstatbuf[24m[1m);[0m
+       [1mint lstat(const char *restrict [4m[22mpathname[24m[1m,[0m
+                [1mstruct stat *restrict [4m[22mstatbuf[24m[1m);[0m
+
+       [1m#include <fcntl.h>           [22m/* Definition of [1mAT_* [22mconstants */
+       [1m#include <sys/stat.h>[0m
+
+       [1mint fstatat(int [4m[22mdirfd[24m[1m, const char *restrict [4m[22mpathname[24m[1m,[0m
+                [1mstruct stat *restrict [4m[22mstatbuf[24m[1m, int [4m[22mflags[24m[1m);[0m
+
+   Feature Test Macro Requirements for glibc (see [1mfeature_test_macros[22m(7)):
+
+       [1mlstat[22m():
+           /* Since glibc 2.20 */ _DEFAULT_SOURCE
+               || _XOPEN_SOURCE >= 500
+               || /* Since glibc 2.10: */ _POSIX_C_SOURCE >= 200112L
+               || /* glibc 2.19 and earlier */ _BSD_SOURCE
+
+       [1mfstatat[22m():
+           Since glibc 2.10:
+               _POSIX_C_SOURCE >= 200809L
+           Before glibc 2.10:
+               _ATFILE_SOURCE
+
+[1mDESCRIPTION[0m
+       These  functions return information about a file, in the buffer pointed to by
+       [4mstatbuf[24m.  No permissions are required on the file itself, but—in the case  of
+       [1mstat[22m(), [1mfstatat[22m(), and [1mlstat[22m()—execute (search) permission is required on all
+       of the directories in [4mpathname[24m that lead to the file.
+
+       [1mstat[22m()  and [1mfstatat[22m() retrieve information about the file pointed to by [4mpath‐[0m
+       [4mname[24m; the differences for [1mfstatat[22m() are described below.
+
+       [1mlstat[22m() is identical to [1mstat[22m(), except that if [4mpathname[24m is a  symbolic  link,
+       then it returns information about the link itself, not the file that the link
+       refers to.
+
+       [1mfstat[22m()  is identical to [1mstat[22m(), except that the file about which information
+       is to be retrieved is specified by the file descriptor [4mfd[24m.
+
+   [1mThe stat structure[0m
+       All of these system calls return a [4mstat[24m structure (see [1mstat[22m(3type)).
+
+       [4mNote[24m: for performance and simplicity reasons, different fields  in  the  [4mstat[0m
+       structure may contain state information from different moments during the ex‐
+       ecution  of the system call.  For example, if [4mst_mode[24m or [4mst_uid[24m is changed by
+       another process by calling [1mchmod[22m(2) or [1mchown[22m(2), [1mstat[22m() might return the  old
+       [4mst_mode[24m together with the new [4mst_uid[24m, or the old [4mst_uid[24m together with the new
+       [4mst_mode[24m.
+
+   [1mfstatat()[0m
+       The  [1mfstatat[22m() system call is a more general interface for accessing file in‐
+       formation which can still provide exactly the behavior  of  each  of  [1mstat[22m(),
+       [1mlstat[22m(), and [1mfstat[22m().
+
+       If  the  pathname given in [4mpathname[24m is relative, then it is interpreted rela‐
+       tive to the directory referred to by the file descriptor [4mdirfd[24m  (rather  than
+       relative  to the current working directory of the calling process, as is done
+       by [1mstat[22m() and [1mlstat[22m() for a relative pathname).
+
+       If [4mpathname[24m is relative and [4mdirfd[24m is the special value [1mAT_FDCWD[22m,  then  [4mpath‐[0m
+       [4mname[24m  is interpreted relative to the current working directory of the calling
+       process (like [1mstat[22m() and [1mlstat[22m()).
+
+       If [4mpathname[24m is absolute, then [4mdirfd[24m is ignored.
+
+       [4mflags[24m can either be 0, or include one or more of the following flags ORed:
+
+       [1mAT_EMPTY_PATH [22m(since Linux 2.6.39)
+              If [4mpathname[24m is an empty string, operate on the  file  referred  to  by
+              [4mdirfd[24m  (which  may  have been obtained using the [1mopen[22m(2) [1mO_PATH [22mflag).
+              In this case, [4mdirfd[24m can refer to any type of file, not just  a  direc‐
+              tory, and the behavior of [1mfstatat[22m() is similar to that of [1mfstat[22m().  If
+              [4mdirfd[24m is [1mAT_FDCWD[22m, the call operates on the current working directory.
+              This  flag is Linux-specific; define [1m_GNU_SOURCE [22mto obtain its defini‐
+              tion.
+
+       [1mAT_NO_AUTOMOUNT [22m(since Linux 2.6.38)
+              Don't automount  the  terminal  ("basename")  component  of  [4mpathname.[0m
+              Since  Linux  3.1 this flag is ignored.  Since Linux 4.11 this flag is
+              implied.
+
+       [1mAT_SYMLINK_NOFOLLOW[0m
+              If [4mpathname[24m is a symbolic link, do not dereference it: instead  return
+              information  about  the  link  itself, like [1mlstat[22m().  (By default, [1mfs‐[0m
+              [1mtatat[22m() dereferences symbolic links, like [1mstat[22m().)
+
+       See [1mopenat[22m(2) for an explanation of the need for [1mfstatat[22m().
+
+[1mRETURN VALUE[0m
+       On success, zero is returned.  On error, -1 is returned, and [4merrno[24m is set  to
+       indicate the error.
+
+[1mERRORS[0m
+       [1mEACCES [22mSearch  permission  is  denied  for one of the directories in the path
+              prefix of [4mpathname[24m.  (See also [1mpath_resolution[22m(7).)
+
+       [1mEBADF  [4m[22mfd[24m is not a valid open file descriptor.
+
+       [1mEBADF  [22m([1mfstatat[22m()) [4mpathname[24m is relative but [4mdirfd[24m is neither [1mAT_FDCWD  [22mnor  a
+              valid file descriptor.
+
+       [1mEFAULT [22mBad address.
+
+       [1mEINVAL [22m([1mfstatat[22m()) Invalid flag specified in [4mflags[24m.
+
+       [1mELOOP  [22mToo many symbolic links encountered while traversing the path.
+
+       [1mENAMETOOLONG[0m
+              [4mpathname[24m is too long.
+
+       [1mENOENT [22mA component of [4mpathname[24m does not exist or is a dangling symbolic link.
+
+       [1mENOENT [4m[22mpathname[24m  is  an  empty  string and [1mAT_EMPTY_PATH [22mwas not specified in
+              [4mflags[24m.
+
+       [1mENOMEM [22mOut of memory (i.e., kernel memory).
+
+       [1mENOTDIR[0m
+              A component of the path prefix of [4mpathname[24m is not a directory.
+
+       [1mENOTDIR[0m
+              ([1mfstatat[22m()) [4mpathname[24m is relative and [4mdirfd[24m is a file descriptor refer‐
+              ring to a file other than a directory.
+
+       [1mEOVERFLOW[0m
+              [4mpathname[24m or [4mfd[24m refers to a file whose size, inode number, or number of
+              blocks cannot be represented in, respectively, the types [4moff_t[24m, [4mino_t[24m,
+              or [4mblkcnt_t[24m.  This error can occur when, for example,  an  application
+              compiled  on  a  32-bit  platform without [4m-D_FILE_OFFSET_BITS=64[24m calls
+              [1mstat[22m() on a file whose size exceeds [4m(1<<31)-1[24m bytes.
+
+[1mSTANDARDS[0m
+       POSIX.1-2008.
+
+[1mHISTORY[0m
+       [1mstat[22m()
+       [1mfstat[22m()
+       [1mlstat[22m()
+              SVr4, 4.3BSD, POSIX.1-2001.
+
+       [1mfstatat[22m()
+              POSIX.1-2008.  Linux 2.6.16, glibc 2.4.
+
+       According to POSIX.1-2001, [1mlstat[22m() on a symbolic link need return  valid  in‐
+       formation only in the [4mst_size[24m field and the file type of the [4mst_mode[24m field of
+       the  [4mstat[24m  structure.   POSIX.1-2008  tightens  the  specification, requiring
+       [1mlstat[22m() to return valid information in all fields except  the  mode  bits  in
+       [4mst_mode[24m.
+
+       Use  of the [4mst_blocks[24m and [4mst_blksize[24m fields may be less portable.  (They were
+       introduced in BSD.  The interpretation differs between systems, and  possibly
+       on a single system when NFS mounts are involved.)
+
+   [1mC library/kernel differences[0m
+       Over time, increases in the size of the [4mstat[24m structure have led to three suc‐
+       cessive  versions  of  [1mstat[22m():  [4msys_stat[24m() (slot [4m__NR_oldstat[24m), [4msys_newstat[24m()
+       (slot [4m__NR_stat[24m), and [4msys_stat64()[24m (slot  [4m__NR_stat64[24m)  on  32-bit  platforms
+       such  as i386.  The first two versions were already present in Linux 1.0 (al‐
+       beit with different names); the last was added in Linux 2.4.  Similar remarks
+       apply for [1mfstat[22m() and [1mlstat[22m().
+
+       The kernel-internal versions of the [4mstat[24m structure dealt with by the  differ‐
+       ent versions are, respectively:
+
+       [4m__old_kernel_stat[0m
+              The original structure, with rather narrow fields, and no padding.
+
+       [4mstat[24m   Larger  [4mst_ino[24m  field and padding added to various parts of the struc‐
+              ture to allow for future expansion.
+
+       [4mstat64[24m Even larger [4mst_ino[24m field, larger [4mst_uid[24m and [4mst_gid[24m fields to  accommo‐
+              date  the Linux-2.4 expansion of UIDs and GIDs to 32 bits, and various
+              other enlarged fields and further padding in the structure.   (Various
+              padding  bytes  were eventually consumed in Linux 2.6, with the advent
+              of 32-bit device IDs  and  nanosecond  components  for  the  timestamp
+              fields.)
+
+       The  glibc [1mstat[22m() wrapper function hides these details from applications, in‐
+       voking the most recent version of the system call provided by the kernel, and
+       repacking the returned information if required for old binaries.
+
+       On modern 64-bit systems, life is simpler: there is a  single  [1mstat[22m()  system
+       call  and  the  kernel  deals with a [4mstat[24m structure that contains fields of a
+       sufficient size.
+
+       The underlying system call employed by the glibc [1mfstatat[22m()  wrapper  function
+       is actually called [1mfstatat64[22m() or, on some architectures, [1mnewfstatat[22m().
+
+[1mEXAMPLES[0m
+       The  following  program calls [1mlstat[22m() and displays selected fields in the re‐
+       turned [4mstat[24m structure.
+
+       #include <stdint.h>
+       #include <stdio.h>
+       #include <stdlib.h>
+       #include <sys/stat.h>
+       #include <sys/sysmacros.h>
+       #include <time.h>
+
+       int
+       main(int argc, char *argv[])
+       {
+           struct stat sb;
+
+           if (argc != 2) {
+               fprintf(stderr, "Usage: %s <pathname>\n", argv[0]);
+               exit(EXIT_FAILURE);
+           }
+
+           if (lstat(argv[1], &sb) == -1) {
+               perror("lstat");
+               exit(EXIT_FAILURE);
+           }
+
+           printf("ID of containing device:  [%x,%x]\n",
+                  major(sb.st_dev),
+                  minor(sb.st_dev));
+
+           printf("File type:                ");
+
+           switch (sb.st_mode & S_IFMT) {
+           case S_IFBLK:  printf("block device\n");            break;
+           case S_IFCHR:  printf("character device\n");        break;
+           case S_IFDIR:  printf("directory\n");               break;
+           case S_IFIFO:  printf("FIFO/pipe\n");               break;
+           case S_IFLNK:  printf("symlink\n");                 break;
+           case S_IFREG:  printf("regular file\n");            break;
+           case S_IFSOCK: printf("socket\n");                  break;
+           default:       printf("unknown?\n");                break;
+           }
+
+           printf("I-node number:            %ju\n", (uintmax_t) sb.st_ino);
+
+           printf("Mode:                     %jo (octal)\n",
+                  (uintmax_t) sb.st_mode);
+
+           printf("Link count:               %ju\n", (uintmax_t) sb.st_nlink);
+           printf("Ownership:                UID=%ju   GID=%ju\n",
+                  (uintmax_t) sb.st_uid, (uintmax_t) sb.st_gid);
+
+           printf("Preferred I/O block size: %jd bytes\n",
+                  (intmax_t) sb.st_blksize);
+           printf("File size:                %jd bytes\n",
+                  (intmax_t) sb.st_size);
+           printf("Blocks allocated:         %jd\n",
+                  (intmax_t) sb.st_blocks);
+
+           printf("Last status change:       %s", ctime(&sb.st_ctime));
+           printf("Last file access:         %s", ctime(&sb.st_atime));
+           printf("Last file modification:   %s", ctime(&sb.st_mtime));
+
+           exit(EXIT_SUCCESS);
+       }
+
+[1mSEE ALSO[0m
+       [1mls[22m(1),  [1mstat[22m(1),  [1maccess[22m(2),  [1mchmod[22m(2),  [1mchown[22m(2),   [1mreadlink[22m(2),   [1mstatx[22m(2),
+       [1mutime[22m(2), [1mstat[22m(3type), [1mcapabilities[22m(7), [1minode[22m(7), [1msymlink[22m(7)
+
+Linux man-pages 6.9.1                2024-06-15                              [4mstat[24m(2)

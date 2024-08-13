@@ -49,7 +49,7 @@ def return_emoji(weather):
             return ""
         else:
             return ""
-    elif weather.description == "Thundery shower":
+    elif weather.description == "Thundery shower" or "Thundery outbreaks in nearby":
         if weather.datetime.hour > 19 or weather.datetime.hour < 6:
             return ""
         else:

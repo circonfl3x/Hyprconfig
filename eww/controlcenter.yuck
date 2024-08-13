@@ -1,6 +1,8 @@
 (include "kbbacklight.yuck")
 (include "media.yuck")
 (include "powermenu.yuck")
+(include "network.yuck")
+(include "bluetooth.yuck")
 (defvar cc_open false)
 (defwidget volume-slider[]
 
@@ -15,7 +17,7 @@
 
 (defwidget brightness-slider[]
   (scale 
-         :value {brightness/max_b*100}
+         :value brightness
          :onchange "brightnessctl set {}%"
          :halign "fill"
          :hexpand true
@@ -28,8 +30,8 @@
   (centerbox :class "cc_topbar"
             :valign "center"
     (label :text "   ${round(vol*100,0)}%" :class "vol-top-label" :halign "start")
-    (label :text "🔆 ${round(brightness/max_b*100,0)}%" :class "bright-top-label" :halign "center")
-    (battery_label_top :percentage battery_status)
+    (label :text "🔆 ${brightness}%" :class "bright-top-label" :halign "center")
+    (battery_label_top)
   
   )
 )
@@ -53,7 +55,7 @@
        :space-evenly false
        :orientation "h"
        :class "slider-cc"
-       (label :text "🔆" :class "slider-brightness-label")
+       (label :text "" :class "slider-brightness-label")
       
   (brightness-slider))
 
@@ -70,12 +72,16 @@
        :class "slider-cc"
      (media) 
   )
-  (box :spacing 5
-            :halign "center"
+  (centerbox :spacing 5
+            :orientation "h"
+            
             :class "box-powerbutton"
             :onclick "${eww} update powermenu_open=${powermenu_open == false ? true : false} ; eww ${powermenu_open == true ? "open" : "close"} powermenu"
-            
-    (label :text " 󰐥 " :class "powerbutton")          
+    ; (label :text "sayalel" :class "username")
+    (network_label)
+    ; (label :text  :class "hostname"  )
+    (blue_name)
+    (label :text " 󰐥 " :class "powerbutton" :halign "end")          
     
   )
   ))

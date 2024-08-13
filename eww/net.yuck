@@ -1,6 +1,11 @@
+; (defpoll net :initial 0
+             ; :interval "10ms"
+; "sh ./scripts/nm.sh")
+
+; C call is 100-400x faster (bruh)
 (defpoll net :initial 0
-             :interval "10ms"
-"sh ./scripts/nm.sh")
+             :interval "1s"
+"./scripts/build/net")
 
 (defwidget network[]
 

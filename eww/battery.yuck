@@ -1,20 +1,27 @@
 
-(defpoll battery_status :initial 0
-                        :interval "1s"
-"sh ./scripts/battery.sh")
-(defpoll charging :initial 0
-                  :interval "500ms"
-"sh ./scripts/charging.sh")
-(defwidget battery_label [?percentage]
+; Deprecated
+; (defpoll battery_status :initial 0
+                        ; :interval "1s"
+; "sh ./scripts/battery.sh")
+; (defpoll charging :initial 0
+                  ; :interval "500ms"
+; "sh ./scripts/charging.sh")
 
-  (label :text "${battery_status > 75 ? "" : battery_status > 60 ? "" : battery_status > 40 ? "" : battery_status > 20 ? "" : ""} ${percentage != "" ? "${percentage}%" : ""}" 
-         :class {charging > 0 ? "bat-charging" : battery_status > 60 ? "bat" : battery_status > 40 ? "bat-mid" : battery_status > 20 ? "bat-midlow" : "bat-low"}
+(defpoll battery :initial '{"c":0,"p":0}'
+                 :interval "1s"
+'./scripts/build/bati'
+)
+
+(defwidget battery_label []
+; (label :text {battery["c"]}))
+  (label :text "${battery["c"] > 75 ? "" : battery["c"] > 60 ? "" : battery["c"] > 40 ? "" : battery["c"] > 20 ? "" : ""}" 
+         :class {battery["p"] != "1" ? "bat-charging" : battery["c"] > 60 ? "bat" : battery["c"] > 40 ? "bat-mid" : battery["c"] > 20 ? "bat-midlow" : "bat-low"}
          ))
 
-(defwidget battery_label_top [?percentage]
+(defwidget battery_label_top []
 
-  (label :text "${battery_status > 75 ? "" : battery_status > 60 ? "" : battery_status > 40 ? "" : battery_status > 20 ? "" : ""}   ${percentage != "" ? "${percentage}%" : ""}" 
-         :class {charging > 0 ? "bat-charging-top" : battery_status > 60 ? "bat-top" : battery_status > 40 ? "bat-mid-top" : battery_status > 20 ? "bat-midlow-top" : "bat-low-top"}
+  (label :text "${battery["c"] > 75 ? "" : battery["c"] > 60 ? "" : battery["c"] > 40 ? "" : battery["c"] > 20 ? "" : ""}  ${battery["c"]}%" 
+         :class {battery["p"] == 0 ? "bat-charging-top" : battery["c"] > 60 ? "bat-top" : battery["c"] > 40 ? "bat-mid-top" : battery["c"] > 20 ? "bat-midlow-top" : "bat-low-top"}
          :halign "end"))
 (defwidget battery[]
 (box :spacing 1
@@ -22,7 +29,7 @@
   (label ;:text "${charging > 0 ? "" : ""}" :class "thunder"
           :text ""
           :class "thunder"
-          :visible {charging == 0 ? false : true})
+          :visible {battery["p"] == 1 ? false : true})
   
-  (battery_label :percentage "")
+  (battery_label)
 ))

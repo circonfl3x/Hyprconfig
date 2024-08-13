@@ -1,25 +1,27 @@
 (defpoll status :interval ""
                 :interval "100ms"
 'sh ./scripts/status.sh')
-(defpoll album :initial ""
-               :interval "100ms"
-'sh ./scripts/song-album.sh'
-)
+; (defpoll album :initial ""
+               ; :interval "100ms"
+; 'sh ./scripts/song-album.sh'
+; )
 
-(defpoll title :initial "No song playing"
-               :interval "100ms"
-'sh ./scripts/song-title.sh')
+; (defpoll title :initial "No song playing"
+               ; :interval "100ms"
+; 'sh ./scripts/song-title.sh')
 
-(defpoll artist :initial ""
-                :interval "100ms"
+; (defpoll artist :initial ""
+                ; :interval "100ms"
                 
-'sh ./scripts/song-artist.sh')
+; 'sh ./scripts/song-artist.sh')
 
-(defpoll artUtl :initial ""
-                :interval "100ms"
-'sh ./scripts/song-art.sh')
+; (defpoll artUtl :initial ""
+                ; :interval "100ms"
+; 'sh ./scripts/song-art.sh')
 
-
+(defpoll music :initial ""
+               :interval "100ms"
+'sh ./scripts/player.sh')
 (defwidget media[]
 (overlay
 (centerbox 
@@ -37,9 +39,9 @@
       :orientation "v"
        :space-evenly true
        :halign "center"
-      (label :text "${status == "p" ? title : "Nothing playing..."}" :class "media-title")
+      (label :text "${status == "p" ? strlength(music["t"]) > 15 ? "${substring(music["t"],0,15)}..." : music["t"] : "Nothing playing..."}" :class "media-title")
      ;(label :text "${album == "" ? "" : "${album} - "} ${artist}" :class "media-album")
-      (label :text "${artist}" :class "media-album"))
+      (label :text {strlength(music["a"]) > 0 ? "${substring(music["a"],0,15)}..." : music["a"]} :class "media-album"))
 
     
     )

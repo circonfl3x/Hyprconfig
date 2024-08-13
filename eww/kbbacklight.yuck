@@ -18,6 +18,6 @@
          :halign "fill"
          :hexpand true
          :orientation "h"
-         :onchange "brightnessctl --device=\"kbd_backlight\" set {}%"
+         :onchange "brightnessctl --device=\"kbd_backlight\" set ${{}/100}%"
   )
 )
